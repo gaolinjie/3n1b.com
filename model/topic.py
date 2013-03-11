@@ -12,7 +12,7 @@ class TopicModel(Query):
         self.table_name = "topic"
         super(TopicModel, self).__init__()
 
-    def get_all_topics(self, num = 16, current_page = 1):
+    def get_all_topics(self, num = 32, current_page = 1):
         join = "LEFT JOIN user AS author_user ON topic.author_id = author_user.uid \
                 LEFT JOIN college ON topic.college_id = college.id \
                 LEFT JOIN node ON topic.node_id = node.id \
@@ -32,7 +32,7 @@ class TopicModel(Query):
                 last_replied_user.nickname as last_replied_nickname"
         return self.order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
-    def get_all_topics_by_node_slug(self, num = 16, current_page = 1, node_slug = None):
+    def get_all_topics_by_node_slug(self, num = 32, current_page = 1, node_slug = None):
         where = "node.slug = '%s'" % node_slug
         join = "LEFT JOIN user AS author_user ON topic.author_id = author_user.uid \
                 LEFT JOIN college ON topic.college_id = college.id \
@@ -53,7 +53,7 @@ class TopicModel(Query):
                 last_replied_user.nickname as last_replied_nickname"
         return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
-    def get_all_topics_by_college_id(self, num = 16, current_page = 1, college_id = None):
+    def get_all_topics_by_college_id(self, num = 32, current_page = 1, college_id = None):
         where = "college.id = '%s'" % college_id
         join = "LEFT JOIN user AS author_user ON topic.author_id = author_user.uid \
                 LEFT JOIN college ON topic.college_id = college.id \
@@ -77,7 +77,7 @@ class TopicModel(Query):
     def get_all_topics_count(self):
         return self.count()
 
-    def get_user_all_topics(self, uid, num = 16, current_page = 1):
+    def get_user_all_topics(self, uid, num = 32, current_page = 1):
         where = "topic.author_id = %s" % uid
         join = "LEFT JOIN user AS author_user ON topic.author_id = author_user.uid \
                 LEFT JOIN college ON topic.college_id = college.id \
@@ -102,7 +102,7 @@ class TopicModel(Query):
         where = "author_id = %s" % uid
         return self.where(where).count()
 
-    def get_user_all_replied_topics(self, uid, num = 16, current_page = 1):
+    def get_user_all_replied_topics(self, uid, num = 32, current_page = 1):
         where = "reply.uid = %s" % uid
         join = "LEFT JOIN reply ON topic.id = reply.tid LEFT JOIN user ON topic.uid = user.uid"
         order = "topic.id DESC"
@@ -143,5 +143,5 @@ class TopicModel(Query):
         order = "topic.reply_count DESC"
         field = "topic.*,\
                 author_user.avatar as author_avatar"
-        return self.where(where).join(join).order(order).field(field).limit(6).select()
+        return self.where(where).join(join).order(order).field(field).limit(10).select()
 

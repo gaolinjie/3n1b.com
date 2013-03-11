@@ -681,8 +681,8 @@ class MembersHandler(BaseHandler):
             "favorites": self.favorite_model.get_user_favorite_count(user_info["uid"]),
             "messages": self.message_model.get_user_unread_message_count(user_info["uid"]),
         }        
-        template_variables["members"] = self.user_model.get_users_by_latest(num = 49)
-        template_variables["active_members"] = self.user_model.get_users_by_last_login(num = 49)
+        template_variables["members"] = self.user_model.get_users_by_latest(num = 100)
+        template_variables["active_members"] = self.user_model.get_users_by_last_login(num = 100)
         template_variables["gen_random"] = gen_random
         template_variables["active_page"] = "members"
         template_variables["wallpaper"] = self.get_wallpaper()
