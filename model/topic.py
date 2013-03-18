@@ -13,6 +13,7 @@ class TopicModel(Query):
         super(TopicModel, self).__init__()
 
     def get_all_topics(self, num = 32, current_page = 1):
+        where = "node.id != 57"
         join = "LEFT JOIN user AS author_user ON topic.author_id = author_user.uid \
                 LEFT JOIN college ON topic.college_id = college.id \
                 LEFT JOIN node ON topic.node_id = node.id \
@@ -30,7 +31,7 @@ class TopicModel(Query):
                 college.id as college_id, \
                 last_replied_user.username as last_replied_username, \
                 last_replied_user.nickname as last_replied_nickname"
-        return self.order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
+        return self.where(where).order(order).join(join).field(field).pages(current_page = current_page, list_rows = num)
 
     def get_all_topics_by_node_slug(self, num = 32, current_page = 1, node_slug = None):
         where = "node.slug = '%s'" % node_slug
